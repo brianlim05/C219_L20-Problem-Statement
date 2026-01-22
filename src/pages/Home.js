@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getCards } from "../services/api";
-import "../index.css";
 
 export default function Home() {
   const [count, setCount] = useState(0);
+  const [hover, setHover] = useState(false);
 
   useEffect(() => {
     getCards().then((arr) => setCount(arr.length));
@@ -12,15 +12,22 @@ export default function Home() {
 
   return (
     <main style={styles.main}>
+      {/* HERO */}
       <section style={styles.hero}>
         <div style={styles.container}>
           <h1 style={styles.title}>Your Cards, Always Accessible.</h1>
-          <p style={styles.subtitle}>Create, manage, and share digital cards effortlessly in no time.</p>
+          <p style={styles.subtitle}>
+            Create, manage, and share digital cards effortlessly in no time.
+          </p>
+
           <Link to="/cards/new">
             <button
-              style={styles.btn}
-              onMouseEnter={(e) => (e.target.style = styles.btnHover)} 
-              onMouseLeave={(e) => (e.target.style = styles.btn)} 
+              style={{
+                ...styles.btn,
+                ...(hover ? styles.btnHover : {}),
+              }}
+              onMouseEnter={() => setHover(true)}
+              onMouseLeave={() => setHover(false)}
             >
               Start Your First Card
             </button>
@@ -28,26 +35,29 @@ export default function Home() {
         </div>
       </section>
 
+      {/* FEATURES */}
       <section style={styles.features}>
         <div style={styles.container}>
           <h2 style={styles.sectionTitle}>Why Choose Our App?</h2>
+
           <div style={styles.grid}>
-            <article style={styles.card} className="cardHover">
-              <h3 style={styles.cardTitle}>Effortless Creation</h3>
-              <p style={styles.cardText}>Create a card in just one click.</p>
-            </article>
-            <article style={styles.card} className="cardHover">
-              <h3 style={styles.cardTitle}>Super Fast Search</h3>
-              <p style={styles.cardText}>Find your card instantly with lightning-fast search.</p>
-            </article>
-            <article style={styles.card} className="cardHover">
-              <h3 style={styles.cardTitle}>Universal Compatibility</h3>
-              <p style={styles.cardText}>Works seamlessly across phones, tablets, and desktops.</p>
-            </article>
+            <FeatureCard
+              title="Effortless Creation"
+              text="Create a card in just one click."
+            />
+            <FeatureCard
+              title="Super Fast Search"
+              text="Find your card instantly with lightning-fast search."
+            />
+            <FeatureCard
+              title="Universal Compatibility"
+              text="Works seamlessly across phones, tablets, and desktops."
+            />
           </div>
         </div>
       </section>
 
+      {/* STATS */}
       <section style={styles.stats}>
         <div style={styles.container}>
           <div style={styles.stat}>
@@ -60,6 +70,26 @@ export default function Home() {
   );
 }
 
+/* ===== SMALL HELPER COMPONENT ===== */
+function FeatureCard({ title, text }) {
+  const [hover, setHover] = useState(false);
+
+  return (
+    <article
+      style={{
+        ...styles.card,
+        ...(hover ? styles.cardHover : {}),
+      }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+      <h3 style={styles.cardTitle}>{title}</h3>
+      <p style={styles.cardText}>{text}</p>
+    </article>
+  );
+}
+
+/* ===== STYLES ===== */
 const styles = {
   main: {
     background: "#f4f7fb",
@@ -71,7 +101,7 @@ const styles = {
     color: "#fff",
     padding: "120px 20px 100px",
     textAlign: "center",
-    borderBottom: "5px solid #fff", 
+    borderBottom: "5px solid #fff",
   },
   container: {
     maxWidth: "960px",
@@ -97,13 +127,13 @@ const styles = {
     fontWeight: "700",
     borderRadius: "30px",
     cursor: "pointer",
-    transition: "transform .3s ease, box-shadow .3s ease",  
+    transition: "transform .3s ease, box-shadow .3s ease",
     boxShadow: "0 8px 20px rgba(0,0,0,.15)",
     outline: "none",
   },
   btnHover: {
-    transform: "scale(1.05)",  
-    boxShadow: "0 12px 30px rgba(0, 0, 0, 0.2)",
+    transform: "scale(1.05)",
+    boxShadow: "0 12px 30px rgba(0,0,0,.2)",
   },
   features: {
     padding: "80px 20px",
@@ -128,11 +158,11 @@ const styles = {
     boxShadow: "0 4px 16px rgba(0,0,0,.05)",
     transition: "transform .3s ease, box-shadow .3s ease",
     cursor: "pointer",
-    textAlign: "center",  
+    textAlign: "center",
   },
   cardHover: {
-    transform: "translateY(-5px)",  
-    boxShadow: "0 8px 30px rgba(0, 0, 0, 0.1)",
+    transform: "translateY(-5px)",
+    boxShadow: "0 8px 30px rgba(0,0,0,.1)",
   },
   cardTitle: {
     fontSize: "22px",
