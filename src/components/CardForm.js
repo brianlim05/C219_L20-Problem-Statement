@@ -5,8 +5,12 @@ export default function CardForm({ onSubmit, busy }) {
   const [imageUrl, setImageUrl] = useState("");
 
   const handleSubmit = (e) => {
-    e.preventDefault(); 
-    const cardData = { name, imageUrl };
+    e.preventDefault();
+
+    const cardData = {
+      card_name: name,
+      card_pic: imageUrl,
+    };
 
     console.log("Submitting card data:", cardData);
 
@@ -14,6 +18,7 @@ export default function CardForm({ onSubmit, busy }) {
       onSubmit(cardData);
     }
   };
+
 
   return (
     <form
