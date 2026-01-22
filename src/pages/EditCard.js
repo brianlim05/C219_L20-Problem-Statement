@@ -42,11 +42,11 @@ export default function EditCard() {
     }
   }
 
-  if (!card) return <p>Loading...</p>;
+  if (!card) return <p style={styles.loadingText}>Loading...</p>;
 
   return (
     <main style={styles.container}>
-      <h2>Edit Card</h2>
+      <h2 style={styles.title}>Edit Card</h2>
       {error && <p style={styles.error}>{error}</p>}
       <CardForm initialData={card} onSubmit={handleSubmit} disabled={busy} />
     </main>
@@ -55,13 +55,29 @@ export default function EditCard() {
 
 const styles = {
   container: {
-    maxWidth: "500px",
+    maxWidth: "600px",
     margin: "40px auto",
-    padding: "24px",
-    border: "1px solid #eee",
-    borderRadius: "10px",
+    padding: "30px",
+    backgroundColor: "#fff",
+    borderRadius: "12px",
+    boxShadow: "0 4px 16px rgba(0, 0, 0, 0.1)",
+    textAlign: "center",
+  },
+  title: {
+    fontSize: "32px",
+    fontWeight: "700",
+    marginBottom: "20px",
+    color: "#333",
   },
   error: {
-    color: "red",
+    color: "#e74c3c",  // Bright red for error visibility
+    fontSize: "16px",
+    fontWeight: "bold",
+    marginBottom: "20px",
+  },
+  loadingText: {
+    textAlign: "center",
+    fontSize: "20px",
+    color: "#555",
   },
 };
