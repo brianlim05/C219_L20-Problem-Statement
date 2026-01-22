@@ -4,13 +4,64 @@ import CardForm from "../components/CardForm";
 import { getCards, updateCard } from "../services/api";
 
 export default function EditCard() {
-  /* TODO: Complete the EditCard page
-    - display a form for editing a card (use the CardForm component to display the form)
-    - handle form submission to call updateCard API
-    - handle loading, busy, and error states
-    - style as a form UI */
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-  return <main>
-    <h1>Edit Card</h1>
-  </main>;
+  const [card, setCard] = useState(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const cards = await getCards();
+        const found = cards.find((c) => c.card_ID === Number(id));
+        setCard(found);
+      } catch {
+        setError("Failed to load card");
+      }
+    }
+    load();
+  }, [id]);
+
+  async function handleSubmit(updatedCard) {
+    try {
+      setBusy(true);
+      setError("");
+
+      await updateCard(id, {
+        card_name: updatedCard.card_name,
+        card_img: updatedCard.card_URL,
+      });
+
+      navigate("/cards");
+    } catch {
+      setError("Failed to update card");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  if (!card) return <p>Loading...</p>;
+
+  return (
+    <main style={styles.container}>
+      <h2>Edit Card</h2>
+      {error && <p style={styles.error}>{error}</p>}
+      <CardForm initialData={card} onSubmit={handleSubmit} disabled={busy} />
+    </main>
+  );
 }
+
+const styles = {
+  container: {
+    maxWidth: "500px",
+    margin: "40px auto",
+    padding: "24px",
+    border: "1px solid #eee",
+    borderRadius: "10px",
+  },
+  error: {
+    color: "red",
+  },
+};
