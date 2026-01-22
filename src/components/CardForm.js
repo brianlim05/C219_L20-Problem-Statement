@@ -1,8 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function CardForm({ onSubmit, busy }) {
+export default function CardForm({ initialData, mode = "add", onSubmit, busy }) {
   const [name, setName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+
+  useEffect(() => {
+    if (initialData && mode === "edit") {
+      setName(initialData.card_name || "");
+      setImageUrl(initialData.card_pic || "");
+    }
+  }, [initialData, mode]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,6 +26,8 @@ export default function CardForm({ onSubmit, busy }) {
     }
   };
 
+  const buttonText = mode === "edit" ? "Save Changes" : "Add Card";
+  const loadingText = mode === "edit" ? "Saving..." : "Adding...";
 
   return (
     <form
@@ -75,9 +84,9 @@ export default function CardForm({ onSubmit, busy }) {
           borderRadius: "5px",
           cursor: "pointer",
         }}
-        disabled={busy} // Disable the button when busy
+        disabled={busy}
       >
-        {busy ? "Adding..." : "Add Card"}
+        {busy ? loadingText : buttonText}
       </button>
     </form>
   );

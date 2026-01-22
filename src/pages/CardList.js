@@ -6,6 +6,7 @@ export default function CardList() {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [deleting, setDeleting] = useState(null);
 
   useEffect(() => {
     fetchCards();
@@ -26,14 +27,15 @@ export default function CardList() {
   };
 
   const handleDelete = async (card) => {
-    if (window.confirm(`Delete card "${card.card_name}"?`)) {
-      try {
-        await deleteCard(card.id);
-        setCards(cards.filter(c => c.id !== card.id));
-      } catch (err) {
-        setError("Failed to delete card");
-        console.error("Error deleting card:", err);
-      }
+    setDeleting(card.id);
+    try {
+      await deleteCard(card.id);
+      setCards(cards.filter(c => c.id !== card.id));
+    } catch (err) {
+      setError("Failed to delete card");
+      console.error("Error deleting card:", err);
+    } finally {
+      setDeleting(null);
     }
   };
 
@@ -52,13 +54,7 @@ export default function CardList() {
     ) : (
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "20px" }}>
         {cards.map(card => (
-          <div key={card.id} style={{ border: "1px solid #ddd", borderRadius: "8px", padding: "16px", textAlign: "center" }}>
-            <img src={card.card_pic} alt="Card" style={{ width: "100%", height: "350px", objectFit: "cover", borderRadius: "4px", marginBottom: "12px" }} />
-            <p style={{ fontSize: "12px", color: "#666" }}>Created: {new Date(card.created_at).toLocaleDateString()}</p>
-            <button onClick={() => handleDelete(card)} style={{ backgroundColor: "#ff4444", color: "white", border: "none", padding: "8px 12px", borderRadius: "4px", cursor: "pointer" }}>
-              Delete
-            </button>
-          </div>
+          <Card key={card.id} card={card} onDelete={handleDelete} busy={deleting === card.id} />
         ))}
       </div>
     )}

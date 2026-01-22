@@ -15,7 +15,7 @@ export default function EditCard() {
     async function load() {
       try {
         const cards = await getCards();
-        const found = cards.find((c) => c.card_ID === Number(id));
+        const found = cards.find((c) => c.id === Number(id));
         setCard(found);
       } catch {
         setError("Failed to load card");
@@ -31,7 +31,7 @@ export default function EditCard() {
 
       await updateCard(id, {
         card_name: updatedCard.card_name,
-        card_img: updatedCard.card_URL,
+        card_pic: updatedCard.card_pic,
       });
 
       navigate("/cards");
@@ -48,7 +48,7 @@ export default function EditCard() {
     <main style={styles.container}>
       <h2 style={styles.title}>Edit Card</h2>
       {error && <p style={styles.error}>{error}</p>}
-      <CardForm initialData={card} onSubmit={handleSubmit} disabled={busy} />
+      <CardForm initialData={card} mode="edit" onSubmit={handleSubmit} disabled={busy} />
     </main>
   );
 }

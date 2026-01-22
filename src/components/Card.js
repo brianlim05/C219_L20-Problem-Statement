@@ -26,7 +26,7 @@ export default function Card({ card, onDelete, busy }) {
         alt={card.card_name}
         style={{
           width: "100%",
-          height: "150px",
+          height: "350px",
           objectFit: "cover",
           borderRadius: "6px",
         }}
