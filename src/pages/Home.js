@@ -14,15 +14,15 @@ export default function Home() {
     <main style={styles.main}>
       <section style={styles.hero}>
         <div style={styles.container}>
-          <h1 style={styles.title}>Your cards, everywhere you go.</h1>
-          <p style={styles.subtitle}>Create, organise and share digital cards in seconds.</p>
+          <h1 style={styles.title}>Your Cards, Always Accessible.</h1>
+          <p style={styles.subtitle}>Create, manage, and share digital cards effortlessly in no time.</p>
           <Link to="/cards/new">
             <button
               style={styles.btn}
               onMouseEnter={(e) => (e.target.style = styles.btnHover)} 
               onMouseLeave={(e) => (e.target.style = styles.btn)} 
             >
-              Create your first card
+              Start Your First Card
             </button>
           </Link>
         </div>
@@ -30,19 +30,19 @@ export default function Home() {
 
       <section style={styles.features}>
         <div style={styles.container}>
-          <h2 style={styles.sectionTitle}>Why Card App?</h2>
+          <h2 style={styles.sectionTitle}>Why Choose Our App?</h2>
           <div style={styles.grid}>
             <article style={styles.card} className="cardHover">
-              <h3 style={styles.cardTitle}>Instant creation</h3>
-              <p style={styles.cardText}>Add a new card with a single click.</p>
+              <h3 style={styles.cardTitle}>Effortless Creation</h3>
+              <p style={styles.cardText}>Create a card in just one click.</p>
             </article>
             <article style={styles.card} className="cardHover">
-              <h3 style={styles.cardTitle}>Powerful search</h3>
-              <p style={styles.cardText}>Find any card in milliseconds.</p>
+              <h3 style={styles.cardTitle}>Super Fast Search</h3>
+              <p style={styles.cardText}>Find your card instantly with lightning-fast search.</p>
             </article>
             <article style={styles.card} className="cardHover">
-              <h3 style={styles.cardTitle}>Fully responsive</h3>
-              <p style={styles.cardText}>Works on phone, tablet, and desktop.</p>
+              <h3 style={styles.cardTitle}>Universal Compatibility</h3>
+              <p style={styles.cardText}>Works seamlessly across phones, tablets, and desktops.</p>
             </article>
           </div>
         </div>
@@ -52,7 +52,7 @@ export default function Home() {
         <div style={styles.container}>
           <div style={styles.stat}>
             <h1 style={styles.statNum}>{count}</h1>
-            <span style={styles.statLabel}>Cards created</span>
+            <span style={styles.statLabel}>Cards Created So Far</span>
           </div>
         </div>
       </section>
@@ -62,7 +62,7 @@ export default function Home() {
 
 const styles = {
   main: {
-    background: "#f4f7fb",  
+    background: "#f4f7fb",
     minHeight: "100vh",
     fontFamily: "'Roboto', sans-serif",
   },
