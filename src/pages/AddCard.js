@@ -1,90 +1,31 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import CardForm from "../components/CardForm";
+import { addCard } from "../services/api";
 
-export default function CardForm({ onSubmit, busy }) {
-  const [name, setName] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [category, setCategory] = useState("");
+export default function AddCard() {
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevents the form from reloading the page
-    const cardData = { name, imageUrl, category };
-    if (onSubmit) {
-      onSubmit(cardData); // Call onSubmit passed from the parent component
+  const handleSubmit = async (cardData) => {
+    setBusy(true);
+    setError(null); // Reset previous errors
+    try {
+      await addCard(cardData); // Call API to add the card
+      navigate("/cards"); // Redirect to cards list after success
+    } catch (err) {
+      setError("There was an error adding the card. Please try again.");
+    } finally {
+      setBusy(false); // Set busy state to false once the request is complete
     }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-        textAlign: "left",
-        maxWidth: "400px",
-        margin: "0 auto",
-      }}
-    >
-      <label style={{ fontSize: "1rem" }}>
-        Card Name:
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-          style={{
-            padding: "10px",
-            fontSize: "1rem",
-            border: "1px solid #ddd",
-            borderRadius: "5px",
-          }}
-        />
-      </label>
-      <label style={{ fontSize: "1rem" }}>
-        Image URL:
-        <input
-          type="url"
-          value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
-          required
-          style={{
-            padding: "10px",
-            fontSize: "1rem",
-            border: "1px solid #ddd",
-            borderRadius: "5px",
-          }}
-        />
-      </label>
-      <label style={{ fontSize: "1rem" }}>
-        Category:
-        <input
-          type="text"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          required
-          style={{
-            padding: "10px",
-            fontSize: "1rem",
-            border: "1px solid #ddd",
-            borderRadius: "5px",
-          }}
-        />
-      </label>
-      <button
-        type="submit"
-        disabled={busy}
-        style={{
-          padding: "10px",
-          fontSize: "1rem",
-          border: "none",
-          backgroundColor: "#02c9c9",
-          color: "white",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
-      >
-        {busy ? "Adding..." : "Add Card"}
-      </button>
-    </form>
+    <main className="add-card-page">
+      <h1>Add Card</h1>
+      {error && <p className="error-message">{error}</p>}
+      <CardForm onSubmit={handleSubmit} busy={busy} />
+    </main>
   );
 }
